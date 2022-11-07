@@ -265,7 +265,7 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/ansokoloff/DevOps_online_Dnipro_2022Q1Q2/main/setup.sh"
+            "https://raw.githubusercontent.com/ansokoloff/armvm/main/setup.sh"
           ],
           "commandToExecute": "sh setup.sh",
           "skipDos2Unix": true
