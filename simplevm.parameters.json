@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "adminUsername": {
+            "value": "arctic" 
+        },
+        "adminPasswordOrKey": {
+            "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDNodzacuSoKXLqAJqiaRyJITyzRodGXupQ/dxDkDehQ1tjF8TgT9CPUYmOYbemwb/+UhgQmYiRZYYP13xEYnKAno6GH9cNIGhh8gz60m1iqTAXKm0ldwYIe5fhZ8FXllc+rhYE9tlHtzJATANZD7utqN5BA0SbaZynNC00tzMRLOc8sYKjH29/KmAloT7ZTkV4zCbpIKqbbjAhASBbdxuwgMP3RfOnYiapHWlPviOSx9lZE1RKpAio2zSyxmcu5qK4hPoRRIwtMbLUZrXvPnp9YiNILvxcgepZuRcMRJwnUkJbHeH7zkUAf9dO7xgOW/NwEoAc/EysLhAW24E/MZWP" // TODO: Fill in parameter value
+        },
+        "authenticationType": {
+            "value": "sshPublicKey" 
+        },
+    }
+}
