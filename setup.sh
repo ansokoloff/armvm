@@ -15,5 +15,5 @@ find /tmp/env/ -type d -exec chown -R arctic:arctic {} \;
 rm -rf /tmp/env/.git
 rm -rf /tmp/env/.gitignore
 find /tmp/env/ -type f -exec cp {} /home/arctic/ \;
-find /tmp/env/ -type d -exec cp {} /home/arctic/ \;
+cp -R /tmp/env/ /home/arctic/
 usermod -a -G docker arctic
