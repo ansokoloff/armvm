@@ -8,12 +8,9 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
 chmod a+r /etc/apt/keyrings/docker.gpg
 apt-get -y update
 apt-get -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin mc git
-mkdir -p /home/arctic/env
 git clone https://github.com/ansokoloff/myenviroinments.git /tmp/env
-find /tmp/env/ -type f -exec chown -R arctic:arctic {} \;
-find /tmp/env/ -type d -exec chown -R arctic:arctic {} \;
+chown -R arctic:arctic /tmp/env
 rm -rf /tmp/env/.git
 rm -rf /tmp/env/.gitignore
-find /tmp/env/ -type f -exec cp {} /home/arctic/ \;
-cp -R /tmp/env/ /home/arctic/
+rsync -a /tmp/env/ /home/arctic
 usermod -a -G docker arctic
