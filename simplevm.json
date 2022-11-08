@@ -67,7 +67,7 @@
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_B2s",
+      "defaultValue": "Standard_D3_v2",
       "metadata": {
         "description": "The size of the VM"
       }
@@ -244,7 +244,12 @@
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPasswordOrKey')]",
           "linuxConfiguration": "[if(equals(parameters('authenticationType'), 'password'), null(), variables('linuxConfiguration'))]"
-        }
+        },
+        "priority": "Spot",
+        "evictionPolicy": "Deallocate"
+        // "billingProfile": {
+        //             "maxPrice": -1
+        //         }
       },
       "dependsOn": [
         "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]"
