@@ -1,5 +1,15 @@
 @description('The name of you Virtual Machine.')
-param vmName string = 'test'
+param ProjectName string = 'test'
+
+@allowed([
+  'spot'
+  'prod'
+])
+@description('The type of spih out.')
+param SpinType string = 'spot'
+
+@description('The type of post initial script. If value equals docker, docker will be install')
+param initscript string = 'all'
 
 @description('Username for the Virtual Machine.')
 param adminUsername string = 'arctic'
@@ -16,7 +26,7 @@ param authenticationType string = 'sshPublicKey'
 param adminPasswordOrKey string
 
 @description('Unique DNS Name for the Public IP used to access the Virtual Machine.')
-param dnsLabelPrefix string = toLower('${vmName}-${uniqueString(resourceGroup().id)}')
+param dnsLabelPrefix string = toLower('${ProjectName}-${uniqueString(resourceGroup().id)}')
 
 @description('The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version.')
 @allowed([
@@ -31,17 +41,12 @@ param location string = resourceGroup().location
 @description('The size of the VM')
 param vmSize string = 'Standard_DS1_v2'
 
-@description('Name of the VNET')
-param virtualNetworkName string = 'vNet'
-
-@description('Name of the subnet in the virtual network')
-param subnetName string = 'Subnet'
-
-@description('Name of the Network Security Group')
-param networkSecurityGroupName string = 'SecGroupNet'
-
-var publicIPAddressName = '${vmName}PublicIP'
-var networkInterfaceName = '${vmName}NetInt'
+var vmName = '${ProjectName}VM'
+var virtualNetworkName = '${ProjectName}VNET'
+var subnetName = '${ProjectName}subnet'
+var networkSecurityGroupName = '${ProjectName}NSG'
+var publicIPAddressName = '${ProjectName}PublicIP'
+var networkInterfaceName = '${ProjectName}NetInt'
 var osDiskType = 'Standard_LRS'
 var subnetAddressPrefix = '10.1.0.0/24'
 var addressPrefix = '10.1.0.0/16'
@@ -117,7 +122,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
 
 resource virtualNetworkName_subnet 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
   parent: virtualNetwork
-  name: '${subnetName}'
+  name: subnetName
   properties: {
     addressPrefix: subnetAddressPrefix
     privateEndpointNetworkPolicies: 'Enabled'
@@ -175,8 +180,8 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-11-01' = {
       adminPassword: adminPasswordOrKey
       linuxConfiguration: ((authenticationType == 'password') ? null : linuxConfiguration)
     }
-    // priority: 'Spot'
-    // evictionPolicy: 'Deallocate'
+    priority: SpinType == 'spot' ? 'Spot' : 'Regular' 
+    evictionPolicy: SpinType == 'spot' ? 'Deallocate' : ''
   }
 }
 
@@ -190,9 +195,7 @@ resource vmName_installscript 'Microsoft.Compute/virtualMachines/extensions@2019
     typeHandlerVersion: '2.1'
     autoUpgradeMinorVersion: true
     settings: {
-      fileUris: [
-        'https://raw.githubusercontent.com/ansokoloff/armvm/main/setup.sh'
-      ]
+      fileUris: initscript == 'docker' ? ['https://raw.githubusercontent.com/ansokoloff/armvm/main/docker.sh'] : ['https://raw.githubusercontent.com/ansokoloff/armvm/main/setup.sh']
       commandToExecute: 'sh setup.sh'
       skipDos2Unix: true
     }

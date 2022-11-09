@@ -2,11 +2,22 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "vmName": {
+    "ProjectName": {
       "value": "test"
+    },
+    "SpinType": {
+      "value": "spot"
     },
     "adminUsername": {
       "value": "arctic"
+    },
+    "adminPasswordOrKey": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/cf992876-74fb-4c7b-a380-8c538dfd9927/resourceGroups/Main-rg/providers/Microsoft.KeyVault/vaults/MyVaultfor"
+        },
+        "secretName": "Myssh"
+      }
     },
     "authenticationType": {
       "value": "sshPublicKey"
@@ -15,16 +26,7 @@
       "value": "20_04-lts-gen2"
     },
     "vmSize": {
-      "value": "Standard_DS1_v2"
-    },
-    "virtualNetworkName": {
-      "value": "vNet"
-    },
-    "subnetName": {
-      "value": "Subnet"
-    },
-    "networkSecurityGroupName": {
-      "value": "SecGroupNet"
+      "value": "Standard_F1s"
     }
   }
 }
