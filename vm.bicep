@@ -195,7 +195,11 @@ resource vmName_installscript 'Microsoft.Compute/virtualMachines/extensions@2019
     typeHandlerVersion: '2.1'
     autoUpgradeMinorVersion: true
     settings: {
-      fileUris: initscript == 'docker' ? ['https://raw.githubusercontent.com/ansokoloff/armvm/main/docker.sh'] : ['https://raw.githubusercontent.com/ansokoloff/armvm/main/setup.sh']
+      fileUris: initscript == 'docker' ? [
+        'https://raw.githubusercontent.com/ansokoloff/armvm/main/docker.sh'
+      ] : [
+        'https://raw.githubusercontent.com/ansokoloff/armvm/main/setup.sh'
+      ]
       commandToExecute: 'sh setup.sh'
       skipDos2Unix: true
     }
